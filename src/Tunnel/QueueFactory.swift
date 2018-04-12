@@ -1,6 +1,6 @@
 import Foundation
 
-class QueueFactory {
+public class QueueFactory {
     private static let queueKey = DispatchSpecificKey<String>()
 
     static let queue: DispatchQueue = {
@@ -9,15 +9,15 @@ class QueueFactory {
         return q
     }()
 
-    static func getQueue() -> DispatchQueue {
+    public static func getQueue() -> DispatchQueue {
         return QueueFactory.queue
     }
 
-    static func onQueue() -> Bool {
+    public static func onQueue() -> Bool {
         return DispatchQueue.getSpecific(key: QueueFactory.queueKey) == "NEKit.ProcessingQueue"
     }
 
-    static func executeOnQueueSynchronizedly<T>(block: () throws -> T ) rethrows -> T {
+    public static func executeOnQueueSynchronizedly<T>(block: () throws -> T ) rethrows -> T {
         if onQueue() {
             return try block()
         } else {
