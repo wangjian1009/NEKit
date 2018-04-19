@@ -81,7 +81,11 @@ public class NWUDPSocket: NSObject {
             }
             }, maxDatagrams: 32)
     }
-    
+
+    public var endpoint : NWEndpoint {
+        return session.endpoint
+    }
+
     /**
      Send data to remote.
      
@@ -157,5 +161,22 @@ public class NWUDPSocket: NSObject {
     
     deinit {
         session.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.state))
+    }
+
+    override public var description: String {
+        return "<\(type(of: self)) \(session.endpoint)>"
+    }
+}
+
+extension NWUDPSessionState : CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .invalid: return "invalid"
+        case .waiting: return "waiting"
+        case .preparing: return "preparing"
+        case .ready: return "ready"
+        case .failed: return "failed"
+        case .cancelled: return "cancelled"
+        }
     }
 }
